@@ -1,0 +1,109 @@
+% !TeX root = ../main.tex
+\chapter{研究方法与理论分析}
+
+\section{地球物理反演的数学建模}
+
+地球物理正演过程可以抽象为从模型空间 $\mathcal{M}$ 到数据空间 $\mathcal{D}$ 的非线性映射算子 $\mathcal{F}$，其含噪观测模型可表示为
+\begin{equation}
+  \mathbf{d}_{\mathrm{obs}} = \mathcal{F}(\mathbf{m}) + \boldsymbol{\varepsilon},
+  \label{eq:forward}
+\end{equation}
+其中，$\mathbf{d}_{\mathrm{obs}} \in \mathbb{R}^{N_t \times N_r}$ 表示实测地球物理数据矩阵，$\mathbf{m} \in \mathbb{R}^{H \times W}$ 表示待反演地下介质物性参数场，$\boldsymbol{\varepsilon}$ 为加性观测噪声。在物理量表达中，波速单位记为 \si{\meter\per\second}，密度单位记为 \si{\kilogram\per\cubic\meter}，频率单位记为 \si{\hertz}，严格遵循 GB 3100～3102—1993 量和单位国家标准（量符号用斜体，单位符号用正体，数值与单位之间保留适当间隙，如 \SI{3500}{\meter\per\second}、\SI{2.65e3}{\kilogram\per\cubic\meter}）。
+
+为同时利用有标签数据先验与物理控制方程约束，本文构造如下复合目标函数：
+\begin{equation}
+  \mathcal{L}(\theta) = \frac{1}{N} \sum_{i=1}^{N} \left\| \hat{\mathbf{m}}_i - \mathbf{m}_i \right\|_2^2
+  + \lambda_{\mathrm{phy}} \left\| \mathcal{F}(\hat{\mathbf{m}}_i) - \mathbf{d}_i \right\|_2^2
+  + \lambda_{\mathrm{reg}} \left\| \nabla \hat{\mathbf{m}}_i \right\|_1,
+  \label{eq:loss}
+\end{equation}
+式中，$\theta$ 为神经网络待优化权重参数，$\hat{\mathbf{m}}_i = \mathcal{G}_\theta(\mathbf{d}_i)$ 为网络输出的反演结果，$\lambda_{\mathrm{phy}}$ 与 $\lambda_{\mathrm{reg}}$ 分别为物理一致性约束系数与梯度稀疏正则化系数。
+
+\section{多尺度特征融合反演网络}
+
+如图~\ref{fig:arch} 所示，本文提出的多尺度物理约束反演框架由多尺度编码器、跨层残差注意力桥接模块、渐进式上采样解码器以及可微正演物理层四部分组成。图序号与图名置于图下方，采用五号宋体居中排版，序号与图题之间空一个汉字符宽度。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    node distance=0.85cm and 0.9cm,
+    box/.style={draw, rounded corners=2pt, minimum width=2.4cm, minimum height=0.95cm, align=center, font=\songti\zihao{5}, fill=gray!6},
+    phy/.style={draw, dashed, rounded corners=2pt, minimum width=2.6cm, minimum height=0.95cm, align=center, font=\songti\zihao{5}, fill=gray!14},
+    arr/.style={-{Stealth[length=2.2mm]}, thick}
+  ]
+    \node[box] (in) {观测地震数据\\$\mathbf{d}_{\mathrm{obs}}$};
+    \node[box, right=of in] (enc) {多尺度编码器\\（空洞金字塔）};
+    \node[box, right=of enc] (att) {残差注意力\\特征融合};
+    \node[box, right=of att] (dec) {渐进式解码器\\$\hat{\mathbf{m}}$};
+    \node[phy, below=1.0cm of dec] (fwd) {可微正演物理算子\\$\mathcal{F}(\hat{\mathbf{m}})$};
+    \node[phy, below=1.0cm of enc] (loss) {数据--物理联合损失\\$\mathcal{L}(\theta)$};
+
+    \draw[arr] (in) -- (enc);
+    \draw[arr] (enc) -- (att);
+    \draw[arr] (att) -- (dec);
+    \draw[arr] (dec) -- (fwd);
+    \draw[arr] (fwd) -- (loss);
+    \draw[arr] (in.south) |- (loss.west);
+    \draw[arr, dashed] (loss.north) -- node[right, font=\zihao{-5}] {反向传播} (enc.south);
+  \end{tikzpicture}
+  \caption{物理约束多尺度特征融合反演网络总体架构示意图}
+  \label{fig:arch}
+\end{figure}
+
+\section{关键参数设置与跨页续表示例}
+
+表~\ref{tab:hyperparams} 给出了模型训练阶段的核心超参数配置。依据规范第 2.5.2 节与表 3.8 要求，表采用国际通用三线表格式，表序号与表题目置于表上方，采用五号宋体居中，序号与题名之间空一个汉字符宽度。
+
+\begin{table}[htbp]
+  \centering
+  \caption{模型训练超参数与正演模拟关键参数设置}
+  \label{tab:hyperparams}
+  \begin{tabular}{cccc}
+    \toprule
+    参数类别 & 参数名称 & 设定值 & 单位 / 说明 \\
+    \midrule
+    正演参数 & 震源主频 $f_0$ & 25.0 & \si{\hertz} \\
+    正演参数 & 空间网格步长 $\Delta x, \Delta z$ & 10.0 & \si{\meter} \\
+    正演参数 & 时间采样间隔 $\Delta t$ & 1.0 & \si{\milli\second} \\
+    训练参数 & 初始学习率 $\eta_0$ & $1.0\times 10^{-3}$ & 余弦退火衰减 \\
+    训练参数 & 物理约束权重 $\lambda_{\mathrm{phy}}$ & 0.25 & 无量纲 \\
+    训练参数 & 正则化权重 $\lambda_{\mathrm{reg}}$ & 0.05 & 无量纲 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+当表格内容较长需要跨页接排时，规范第 2.5.2 节要求在续页重复表序号、表题（可省略）加“（续）”，并重复表头。表~\ref{tab:longexample} 给出了基于 \texttt{longtable} 宏包的标准续表实现示范。
+
+\begin{longtable}{ccccc}
+  \caption{不同岩性层位典型地球物理参数统计表}\label{tab:longexample}\\
+  \toprule
+  编号 & 岩性名称 & 纵波速度 / (\si{\meter\per\second}) & 密度 / (\si{\gram\per\cubic\centi\meter}) & 孔隙度 / \% \\
+  \midrule
+  \endfirsthead
+
+  \multicolumn{5}{c}{\songti\zihao{5} 表\thetable\hspace{1\ccwd}不同岩性层位典型地球物理参数统计表（续）}\\[4pt]
+  \toprule
+  编号 & 岩性名称 & 纵波速度 / (\si{\meter\per\second}) & 密度 / (\si{\gram\per\cubic\centi\meter}) & 孔隙度 / \% \\
+  \midrule
+  \endhead
+
+  \midrule
+  \multicolumn{5}{r}{\songti\zihao{-5}（续下页）}\\
+  \endfoot
+
+  \bottomrule
+  \endlastfoot
+
+  1  & 第四系松散砂土 & 1650 & 1.85 & 32.4 \\
+  2  & 泥质粉砂岩     & 2480 & 2.18 & 21.6 \\
+  3  & 细粒石英砂岩   & 3120 & 2.34 & 16.2 \\
+  4  & 钙质胶结砂岩   & 3680 & 2.49 & 11.5 \\
+  5  & 致密页岩       & 3350 & 2.52 &  6.8 \\
+  6  & 生物碎屑灰岩   & 4850 & 2.66 &  4.9 \\
+  7  & 白云质灰岩     & 5420 & 2.74 &  3.7 \\
+  8  & 结晶白云岩     & 5890 & 2.81 &  2.5 \\
+  9  & 火山凝灰岩     & 4120 & 2.55 &  8.3 \\
+  10 & 安山玄武岩     & 5640 & 2.86 &  1.9 \\
+  11 & 花岗闪长岩     & 5980 & 2.72 &  1.1 \\
+  12 & 变质片麻岩     & 6150 & 2.79 &  0.8 \\
+\end{longtable}

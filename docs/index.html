@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中国地质大学（武汉）研究生学位论文 LaTeX 模板 | cugthesis</title>
+  <meta name="description" content="严格依据《中国地质大学（武汉）研究生学位论文写作规范》（2025年5月修改版）制作的 XeLaTeX 学位论文模板，支持学硕、博士、全日制与非全日制专硕、盲审与双面印刷。" />
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --surface-alt: #f0f4f9;
+      --ink: #162133;
+      --muted: #516077;
+      --primary: #0f4c81;
+      --primary-dark: #09355c;
+      --accent: #c58b2b;
+      --border: #dfe6f0;
+      --code-bg: #0f172a;
+      --code-ink: #e2e8f0;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(15, 76, 129, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Top Nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 16px;
+    }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), #1d6fb3);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: Georgia, serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .nav-links a { color: var(--muted); font-weight: 500; }
+    .nav-links a:hover { color: var(--primary); text-decoration: none; }
+
+    /* Hero */
+    .hero {
+      background: radial-gradient(circle at 85% 15%, rgba(197, 139, 43, 0.14), transparent 36%),
+                  radial-gradient(circle at 12% 20%, rgba(15, 76, 129, 0.12), transparent 42%),
+                  linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      padding: 72px 24px 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 44px;
+      align-items: center;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e9f2fb;
+      color: var(--primary);
+      border: 1px solid #c9dff5;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.24;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .hero-desc {
+      margin: 0 0 28px;
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 580px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(15, 76, 129, 0.24);
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover { border-color: #b7c8de; background: #fafcff; }
+
+    .clone-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      max-width: 560px;
+    }
+    .clone-box code { overflow-x: auto; white-space: nowrap; }
+    .copy-btn {
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 7px;
+      padding: 5px 11px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: rgba(255, 255, 255, 0.22); }
+
+    .hero-showcase {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .paper-stack {
+      position: relative;
+      width: 100%;
+      max-width: 390px;
+    }
+    .paper-back {
+      position: absolute;
+      inset: 16px -14px -12px 18px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+      transform: rotate(2.5deg);
+      overflow: hidden;
+      opacity: 0.92;
+    }
+    .paper-front {
+      position: relative;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 50px rgba(15, 42, 74, 0.16);
+      overflow: hidden;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    .paper-front:hover { transform: translateY(-3px); }
+    .paper-front img, .paper-back img { display: block; width: 100%; height: auto; }
+
+    /* Sections */
+    .section {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .section-head {
+      margin-bottom: 32px;
+    }
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: clamp(22px, 2.8vw, 30px);
+      line-height: 1.3;
+    }
+    .section-sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* Features Grid */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #eaf2fb;
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+    .card p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Interactive Configurator */
+    .config-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .form-row {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      padding: 7px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      color: var(--ink);
+      cursor: pointer;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+    .toggle-item input { accent-color: var(--primary); }
+
+    .code-card {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .code-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .code-card pre {
+      margin: 0;
+      padding: 18px 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .config-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Preview Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .thumb {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: zoom-in;
+      box-shadow: var(--shadow);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .thumb:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(15, 76, 129, 0.14);
+    }
+    .thumb img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 210 / 297;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+    .thumb-cap {
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .thumb-cap span { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+    /* Quick Start Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* Spec Table */
+    .spec-table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 13px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--surface-alt);
+      font-weight: 700;
+      color: var(--ink);
+      width: 24%;
+    }
+    tr:last-child td, tr:last-child th { border-bottom: none; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(10, 18, 32, 0.84);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      max-width: 780px;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .lightbox img {
+      max-height: 84vh;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      background: #fff;
+    }
+    .lightbox-title {
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    @media (max-width: 960px) {
+      .hero-inner, .config-panel, .two-col { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero-showcase { order: -1; }
+      .paper-stack { max-width: 290px; }
+    }
+    @media (max-width: 600px) {
+      .grid-3 { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-mark">地</div>
+        <span>CUG 研究生学位论文 LaTeX 模板</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#features">核心特性</a>
+        <a href="#preview">排版预览</a>
+        <a href="#configurator">选项生成器</a>
+        <a href="#quickstart">快速开始</a>
+        <a href="#spec">2025 规范核对</a>
+        <a href="https://github.com/zhanlutuzi/cug-thesis-latex" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="pill">
+          <span class="pill-dot"></span>
+          依据 2025 年 5 月最新写作规范 · XeLaTeX + BibTeX
+        </div>
+        <h1>中国地质大学（武汉）<br />研究生学位论文 LaTeX 模板</h1>
+        <p class="hero-desc">
+          严格落实《中国地质大学（武汉）研究生学位论文写作规范》（2025 年 5 月修改版）正文及附件 1–11 的全部排版细则。支持学硕、博士、全日制与非全日制专硕，跨平台开箱即用，专注写作本身。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="sample.pdf" target="_blank" rel="noopener">查看完整样稿 PDF</a>
+          <a class="btn btn-secondary" href="https://github.com/zhanlutuzi/cug-thesis-latex" target="_blank" rel="noopener">访问 GitHub 仓库</a>
+          <a class="btn btn-secondary" href="https://github.com/zhanlutuzi/cug-thesis-latex/archive/refs/heads/main.zip">下载 ZIP 压缩包</a>
+        </div>
+        <div class="clone-box">
+          <code id="cloneCmd">git clone https://github.com/zhanlutuzi/cug-thesis-latex.git</code>
+          <button class="copy-btn" data-copy="cloneCmd">复制</button>
+        </div>
+      </div>
+
+      <div class="hero-showcase">
+        <div class="paper-stack">
+          <div class="paper-back">
+            <img src="assets/preview-chap1.png" alt="正文页预览" />
+          </div>
+          <div class="paper-front" data-lightbox="assets/preview-cover.png" data-caption="中文封面（依据规范表 3.2）">
+            <img src="assets/preview-cover.png" alt="中文封面预览" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <div class="section-head">
+      <div class="section-eyebrow">Features</div>
+      <h2>为什么选择这套模板</h2>
+      <p class="section-sub">把繁琐的字号、20 磅固定行距、双面页眉与多套题名页全部封装进 <code>cugthesis.cls</code>。</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">16</div>
+        <h3>完整 16 部分顺序覆盖</h3>
+        <p>封面、中英文题名页、原创性声明、导师承诺书、使用授权书、作者简介、答辩委员会名单、中英文摘要、目录、图表清单、正文、参考文献、致谢与附录一应俱全。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">硕</div>
+        <h3>6 类学位一键切换</h3>
+        <p>内置学术型硕士、博士、全日制专硕、非全日制专硕、同等学力硕博，自动切换“专业学位类别”、企业导师、英文题名页模板与奇数页页眉。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">20</div>
+        <h3>逐项对齐 2025 版规范</h3>
+        <p>A4 四周 3 cm 页边距、正文宋体/Times New Roman 小四固定行距 20 磅、一级节标题黑体四号居中、正文奇偶页眉外侧页码，精确对照附件 1–11。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">GB</div>
+        <h3>GB/T 7714 双引文体制</h3>
+        <p>基于 <code>gbt7714</code> 原生支持顺序编码制（上标 <code>[1]</code> 自动压缩）与著者-出版年制，示范期刊、图书、会议、学位论文、标准与专利条目。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">字</div>
+        <h3>跨平台零配置字体</h3>
+        <p><code>fontset=auto</code> 自动识别 Windows（宋体/黑体/仿宋）、macOS（Songti SC/Heiti SC/仿宋_GB2312）与 Linux / Overleaf 内置 Fandol 字体，告别缺字报错。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">审</div>
+        <h3>盲审、书脊与印刷模式</h3>
+        <p>一行选项即可切换盲审遮罩（<code>blind=true</code>）、关闭自制封面（<code>cover=false</code>）、双面印刷补白（<code>print=true</code>）与仿宋竖排书脊（<code>spine=true</code>）。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="preview" class="section" style="padding-top: 16px;">
+    <div class="section-head">
+      <div class="section-eyebrow">Preview</div>
+      <h2>样稿排版预览</h2>
+      <p class="section-sub">以下图片均由本模板 <code>main.tex</code> 经 <code>XeLaTeX</code> 实际编译渲染，点击任意页面可放大查看细节。</p>
+    </div>
+
+    <div class="gallery">
+      <div class="thumb" data-lightbox="assets/preview-cover.png" data-caption="中文封面（规范 1.1 / 表 3.2）">
+        <img src="assets/preview-cover.png" alt="中文封面" loading="lazy" />
+        <div class="thumb-cap">中文封面 <span>表 3.2</span></div>
+      </div>
+      <div class="thumb" data-lightbox="assets/preview-title-zh.png" data-caption="中文题名页（规范 1.2 / 附件 1）">
+        <img src="assets/preview-title-zh.png" alt="中文题名页" loading="lazy" />
+        <div class="thumb-cap">中文题名页 <span>附件 1</span></div>
+      </div>
+      <div class="thumb" data-lightbox="assets/preview-title-en.png" data-caption="英文题名页（规范 3.5 / 附件 2）">
+        <img src="assets/preview-title-en.png" alt="英文题名页" loading="lazy" />
+        <div class="thumb-cap">英文题名页 <span>附件 2</span></div>
+      </div>
+      <div class="thumb" data-lightbox="assets/preview-toc.png" data-caption="自动目录（规范 3.7 / 附件 8）">
+        <img src="assets/preview-toc.png" alt="目录" loading="lazy" />
+        <div class="thumb-cap">目录 <span>附件 8</span></div>
+      </div>
+      <div class="thumb" data-lightbox="assets/preview-chap1.png" data-caption="正文奇数页：标题居中、页眉外侧页码、当页带圈脚注">
+        <img src="assets/preview-chap1.png" alt="第一章正文" loading="lazy" />
+        <div class="thumb-cap">正文与脚注 <span>规范 2.3–2.4</span></div>
+      </div>
+      <div class="thumb" data-lightbox="assets/preview-chap2.png" data-caption="公式右对齐编号、SI 国际单位与矢量示意图">
+        <img src="assets/preview-chap2.png" alt="公式与插图" loading="lazy" />
+        <div class="thumb-cap">公式与插图 <span>规范 2.5 / 2.7</span></div>
+      </div>
+      <div class="thumb" data-lightbox="assets/preview-table.png" data-caption="正文偶数页：三线表与跨页续表示范">
+        <img src="assets/preview-table.png" alt="三线表与续表" loading="lazy" />
+        <div class="thumb-cap">三线表与续表 <span>规范 2.5.2</span></div>
+      </div>
+      <div class="thumb" data-lightbox="assets/preview-bib.png" data-caption="GB/T 7714 参考文献（宋体/TNR 小四，20 磅行距）">
+        <img src="assets/preview-bib.png" alt="参考文献" loading="lazy" />
+        <div class="thumb-cap">参考文献 <span>附件 11</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="configurator" class="section" style="padding-top: 16px;">
+    <div class="section-head">
+      <div class="section-eyebrow">Configurator</div>
+      <h2>交互式文档选项生成器</h2>
+      <p class="section-sub">选择你的学位类型与提交场景，自动生成 <code>main.tex</code> 顶部配置代码。</p>
+    </div>
+
+    <div class="config-panel">
+      <div>
+        <div class="form-row">
+          <span class="form-label">1. 学位类型（degree）</span>
+          <div class="chip-group" id="degreeGroup">
+            <button class="chip active" data-val="master">学术型硕士</button>
+            <button class="chip" data-val="profmaster">全日制专硕</button>
+            <button class="chip" data-val="parttime">非全日制专硕</button>
+            <button class="chip" data-val="doctor">博士学位</button>
+            <button class="chip" data-val="eqmaster">同等学力硕士</button>
+            <button class="chip" data-val="eqdoctor">同等学力博士</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">2. 参考文献标注体制（bibstyle）</span>
+          <div class="chip-group" id="bibGroup">
+            <button class="chip active" data-val="numerical">顺序编码制 [1]</button>
+            <button class="chip" data-val="authoryear">著者-出版年制</button>
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-bottom: 0;">
+          <span class="form-label">3. 输出场景开关</span>
+          <div class="toggle-grid">
+            <label class="toggle-item"><input type="checkbox" id="optCover" checked /> 输出中文封面 (cover)</label>
+            <label class="toggle-item"><input type="checkbox" id="optBlind" /> 盲审遮罩模式 (blind)</label>
+            <label class="toggle-item"><input type="checkbox" id="optPrint" /> 双面印刷补白 (print)</label>
+            <label class="toggle-item"><input type="checkbox" id="optSpine" /> 末尾附书脊页 (spine)</label>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="code-card">
+          <div class="code-card-head">
+            <span>main.tex</span>
+            <button class="copy-btn" data-copy="genCode">复制配置</button>
+          </div>
+          <pre id="genCode"></pre>
+        </div>
+        <p class="config-note" id="configHint"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="quickstart" class="section" style="padding-top: 16px;">
+    <div class="section-head">
+      <div class="section-eyebrow">Quick Start</div>
+      <h2>编译与新增章节指南</h2>
+      <p class="section-sub">支持本地命令行、VS Code 与 Overleaf，新增一章只需两步。</p>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="cli">命令行 / Make</button>
+          <button class="tab-btn" data-tab="vscode">VS Code</button>
+          <button class="tab-btn" data-tab="overleaf">Overleaf</button>
+        </div>
+
+        <div class="tab-pane active" id="tab-cli">
+          <div class="code-card">
+            <div class="code-card-head"><span>Terminal (macOS / Linux / Windows)</span></div>
+            <pre># 1. 克隆模板并进入目录
+git clone https://github.com/zhanlutuzi/cug-thesis-latex.git
+cd cug-thesis-latex
+
+# 2. 一键编译（已配置 latexmkrc，自动执行 XeLaTeX + BibTeX）
+latexmk -xelatex main.tex
+
+# 或直接运行 make / 清理中间文件
+make
+make clean</pre>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-vscode">
+          <div class="code-card">
+            <div class="code-card-head"><span>VS Code + LaTeX Workshop</span></div>
+            <pre>1. 安装扩展：LaTeX Workshop
+2. 用 VS Code 打开模板文件夹，打开 main.tex
+3. 按 Cmd+Option+B (macOS) 或 Ctrl+Alt+B (Windows)
+   根目录 latexmkrc 会自动启用 XeLaTeX + BibTeX 完整编译
+4. 按 Cmd+Option+V / Ctrl+Alt+V 实时分屏预览 PDF</pre>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-overleaf">
+          <div class="code-card">
+            <div class="code-card-head"><span>Overleaf 在线编辑</span></div>
+            <pre>1. 下载仓库 ZIP 压缩包
+2. 在 Overleaf 点击 New Project -> Upload Project 上传 ZIP
+3. 点击左上角 Menu -> Compiler，切换为 XeLaTeX
+4. 点击 Recompile 即可在线生成 main.pdf（自动使用 Fandol 字体）</pre>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="code-card">
+          <div class="code-card-head"><span>新增一章（两步完成，编号与目录自动更新）</span></div>
+          <pre>% 第 1 步：在 chapters/ 下新建 chap05.tex
+% !TeX root = ../main.tex
+\chapter{你的新章节标题}
+\section{第一节标题}
+正文内容……
+
+% 第 2 步：在 main.tex 的 \cugmainmatter 下加入一行 \include
+\cugmainmatter
+\include{chapters/chap01}
+\include{chapters/chap02}
+\include{chapters/chap03}
+\include{chapters/chap05}  % 自动编为“第四章”
+\include{chapters/chap04}  % 原结论自动顺延为“第五章”</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="spec" class="section" style="padding-top: 16px;">
+    <div class="section-head">
+      <div class="section-eyebrow">Specification</div>
+      <h2>2025 年 5 月写作规范核心参数对照</h2>
+      <p class="section-sub">全部数值均取自仓库内 <code>学校规范/</code> 目录中的官方正文与附件 1–11。</p>
+    </div>
+
+    <div class="spec-table-wrap">
+      <table>
+        <tbody>
+          <tr>
+            <th>纸张与页边距（3.1）</th>
+            <td>A4（210 × 297 mm），上下左右均为 3 cm，页眉 2.5 cm，页脚 2.0 cm，装订线 0 cm。</td>
+          </tr>
+          <tr>
+            <th>页眉与页码（2.4 / 附件 10）</th>
+            <td>五号（10.5 磅）宋体带下划线；奇数页居中“中国地质大学□学位论文”，页码居右上角；偶数页居中“作者姓名：论文题目”，页码居左上角；摘要/目录用大写罗马数字 <code>I, II...</code>，正文自第一章起用阿拉伯数字 <code>1, 2...</code>。</td>
+          </tr>
+          <tr>
+            <th>各级标题（2.3 / 表 3.8）</th>
+            <td>章标题（<code>第一章 ×××</code>）黑体三号加粗居中；一级节标题（<code>1.1 ×××</code>）黑体四号加粗居中；二级节标题（<code>1.1.1 ×××</code>）黑体小四居左；序号与题名间隔 1 个汉字符。</td>
+          </tr>
+          <tr>
+            <th>正文与摘要（3.6 / 3.8）</th>
+            <td>宋体小四（12 磅），英文 Times New Roman 小四，两端对齐，首行缩进 2 汉字符，固定值行距 20 磅，段前段后 0 磅。</td>
+          </tr>
+          <tr>
+            <th>图、表与公式（2.5 / 表 3.8）</th>
+            <td>图下表上，五号宋体居中单倍行距，序号与题名空 1 汉字符；推荐三线表，跨页续表重复表头并标“（续）”；公式编号 <code>(2.1)</code> 五号 Times New Roman 右对齐。</td>
+          </tr>
+          <tr>
+            <th>参考文献（2.6 / 3.9 / 附件 11）</th>
+            <td>遵循 GB/T 7714，支持顺序编码制与著者-出版年制；宋体 / Times New Roman 小四，固定行距 20 磅。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin: 0 0 6px;">
+      中国地质大学（武汉）研究生学位论文 LaTeX 模板（非官方开源维护） · MIT License
+    </p>
+    <p style="margin: 0;">
+      <a href="https://github.com/zhanlutuzi/cug-thesis-latex" target="_blank" rel="noopener">GitHub 仓库</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/zhanlutuzi/cug-thesis-latex/blob/main/README.md" target="_blank" rel="noopener">完整使用文档</a>
+      &nbsp;·&nbsp;
+      <a href="sample.pdf" target="_blank" rel="noopener">样稿 PDF</a>
+    </p>
+  </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-inner">
+      <img id="lightboxImg" src="" alt="页面大图预览" />
+      <div class="lightbox-title" id="lightboxTitle"></div>
+    </div>
+  </div>
+
+  <script>
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.copy);
+        if (!target) return;
+        navigator.clipboard.writeText(target.textContent.trim()).then(() => {
+          const old = btn.textContent;
+          btn.textContent = '已复制';
+          setTimeout(() => { btn.textContent = old; }, 1600);
+        });
+      });
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightboxImg');
+    const lbTitle = document.getElementById('lightboxTitle');
+    document.querySelectorAll('[data-lightbox]').forEach(el => {
+      el.addEventListener('click', () => {
+        lbImg.src = el.dataset.lightbox;
+        lbTitle.textContent = el.dataset.caption || '';
+        lb.classList.add('open');
+      });
+    });
+    lb.addEventListener('click', () => lb.classList.remove('open'));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') lb.classList.remove('open');
+    });
+
+    // Configurator
+    const state = {
+      degree: 'master',
+      bibstyle: 'numerical',
+      cover: true,
+      blind: false,
+      print: false,
+      spine: false
+    };
+
+    const hints = {
+      master: '学术型硕士：题名页自动显示“学科专业”，奇数页页眉为“中国地质大学硕士学位论文”。',
+      profmaster: '全日制专硕：中英文题名页自动切换为“专业学位类别 / Full-Time Master of Professional Degree”。',
+      parttime: '非全日制专硕：自动启用“专业学位类别”，建议在 \\cugsetup 中同时填写 corpsupervisor（企业导师）。',
+      doctor: '博士学位：中英文题名页自动切换为“博士学位论文 / Ph.D. Candidate”，声明自动替换为“博士”。',
+      eqmaster: '同等学力硕士：奇数页页眉与题名页自动显示“同等学力硕士学位论文”。',
+      eqdoctor: '同等学力博士：奇数页页眉与题名页自动显示“同等学力博士学位论文”。'
+    };
+
+    function renderConfig() {
+      const opts = [
+        `  degree=${state.degree},`,
+        `  bibstyle=${state.bibstyle},`,
+        `  fontset=auto,`,
+        `  cover=${state.cover},`,
+        `  blind=${state.blind},`,
+        `  print=${state.print},`,
+        `  spine=${state.spine}`
+      ];
+      document.getElementById('genCode').textContent =
+        `\\documentclass[\n${opts.join('\n')}\n]{cugthesis}`;
+      document.getElementById('configHint').textContent = hints[state.degree];
+    }
+
+    function bindGroup(id, key) {
+      const group = document.getElementById(id);
+      group.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          state[key] = chip.dataset.val;
+          renderConfig();
+        });
+      });
+    }
+
+    bindGroup('degreeGroup', 'degree');
+    bindGroup('bibGroup', 'bibstyle');
+    document.getElementById('optCover').addEventListener('change', e => { state.cover = e.target.checked; renderConfig(); });
+    document.getElementById('optBlind').addEventListener('change', e => { state.blind = e.target.checked; renderConfig(); });
+    document.getElementById('optPrint').addEventListener('change', e => { state.print = e.target.checked; renderConfig(); });
+    document.getElementById('optSpine').addEventListener('change', e => { state.spine = e.target.checked; renderConfig(); });
+    renderConfig();
+  </script>
+</body>
+</html>

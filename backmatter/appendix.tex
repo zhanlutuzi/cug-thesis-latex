@@ -1,0 +1,29 @@
+% !TeX root = ../main.tex
+% 第1.15节、第3.9节：附录（标题同各章标题，正文宋体小四、固定行距20磅）
+\chapter{主要符号说明与补充推导}
+
+本附录给出正文中涉及的主要数学符号定义（表~\ref{tab:symbols}），以方便读者查阅。
+
+\begin{table}[htbp]
+  \centering
+  \caption{论文主要数学符号及物理含义说明}
+  \label{tab:symbols}
+  \begin{tabular}{ccc}
+    \toprule
+    符号 & 含义 & 单位 \\
+    \midrule
+    $\mathbf{d}_{\mathrm{obs}}$ & 地表观测地球物理数据矩阵 & 无量纲 / \si{\meter\per\second} \\
+    $\mathbf{m}, \hat{\mathbf{m}}$ & 真实与反演地下物性参数模型 & \si{\meter\per\second} \\
+    $\mathcal{F}(\cdot)$ & 地球物理正演映射算子 & — \\
+    $\mathcal{G}_\theta(\cdot)$ & 参数为 $\theta$ 的深度学习反演网络 & — \\
+    $\lambda_{\mathrm{phy}}, \lambda_{\mathrm{reg}}$ & 物理一致性与正则化权重系数 & 无量纲 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+在弱扰动线性化假设下，正演残差关于模型参数的一阶 Fr\'echet 导数矩阵（即雅可比矩阵）记为 $\mathbf{J} = \partial \mathcal{F}(\mathbf{m}) / \partial \mathbf{m}$，由此可得高斯--牛顿型迭代更新增量：
+\begin{equation}
+  \Delta \mathbf{m} = -\left( \mathbf{J}^{\mathsf{T}}\mathbf{J} + \alpha \mathbf{L}^{\mathsf{T}}\mathbf{L} \right)^{-1}
+  \mathbf{J}^{\mathsf{T}}\left( \mathcal{F}(\mathbf{m}) - \mathbf{d}_{\mathrm{obs}} \right).
+  \label{eq:gn}
+\end{equation}

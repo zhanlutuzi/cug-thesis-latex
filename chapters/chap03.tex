@@ -1,0 +1,67 @@
+% !TeX root = ../main.tex
+\chapter{实验结果与讨论}
+
+\section{实验设置与评价指标}
+
+为全面评估所提方法的有效性与泛化能力，本文选取决定系数 $R^2$、均方根误差（RMSE）及结构相似性指数（SSIM）作为定量评价指标。其中，均方根误差定义为
+\begin{equation}
+  \mathrm{RMSE} = \sqrt{\frac{1}{HW} \sum_{p=1}^{H} \sum_{q=1}^{W} \left( \hat{m}_{p,q} - m_{p,q} \right)^2}.
+  \label{eq:rmse}
+\end{equation}
+
+\section{对比实验与消融分析}
+
+\subsection{不同反演方法精度对比}
+
+将本文提出的多尺度物理约束网络（MS-PINN）与传统全波形反演（FWI）、标准 U-Net 及 InversionNet 在含噪测试集上进行对比，定量指标汇总见表~\ref{tab:compare}。
+
+\begin{table}[htbp]
+  \centering
+  \caption{不同反演方法在测试集上的综合性能对比}
+  \label{tab:compare}
+  \begin{tabular}{lcccc}
+    \toprule
+    反演方法 & $R^2$ & RMSE / (\si{\meter\per\second}) & SSIM & 单样本耗时 / \si{\second} \\
+    \midrule
+    传统 FWI\cite{tarantola2005inverse}   & 0.861 & 214.5 & 0.842 & 128.40 \\
+    标准 U-Net\cite{li2022dl}              & 0.884 & 186.2 & 0.875 &   0.04 \\
+    InversionNet\cite{wu2019inversionnet}  & 0.902 & 162.8 & 0.896 &   0.05 \\
+    本文方法（MS-PINN）                    & \textbf{0.960} & \textbf{103.4} & \textbf{0.952} & \textbf{0.06} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{抗噪鲁棒性分析}
+
+图~\ref{fig:noise} 展示了在不同信噪比（SNR）条件下各方法的收敛特性与误差变化趋势。由图~\ref{fig:noise}(a) 与图~\ref{fig:noise}(b) 可知，得益于物理约束项对高频随机干扰的抑制作用，当信噪比降低至 \SI{10}{\decibel} 时，本文方法仍能维持较高的结构保真度。
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.46\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.82]
+      \draw[->] (0,0) -- (5.2,0) node[right, font=\zihao{5}] {Epoch};
+      \draw[->] (0,0) -- (0,3.4) node[above, font=\zihao{5}] {Loss};
+      \draw[thick, dashed] plot[smooth] coordinates {(0.3,3.0) (1.2,2.1) (2.4,1.5) (3.6,1.2) (4.8,1.05)};
+      \draw[thick] plot[smooth] coordinates {(0.3,2.9) (1.2,1.6) (2.4,0.95) (3.6,0.65) (4.8,0.52)};
+      \node[font=\zihao{-5}] at (3.6,1.55) {U-Net};
+      \node[font=\zihao{-5}] at (3.6,0.32) {本文方法};
+    \end{tikzpicture}
+    \caption{训练损失收敛曲线}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.46\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.82]
+      \draw[->] (0,0) -- (5.2,0) node[right, font=\zihao{5}] {SNR / dB};
+      \draw[->] (0,0) -- (0,3.4) node[above, font=\zihao{5}] {$R^2$};
+      \draw[thick, dashed] plot[smooth] coordinates {(0.5,1.2) (1.6,1.8) (2.8,2.25) (4.0,2.5) (4.8,2.65)};
+      \draw[thick] plot[smooth] coordinates {(0.5,1.95) (1.6,2.45) (2.8,2.85) (4.0,3.05) (4.8,3.15)};
+      \node[font=\zihao{-5}] at (3.7,2.15) {U-Net};
+      \node[font=\zihao{-5}] at (3.5,3.22) {本文方法};
+    \end{tikzpicture}
+    \caption{不同信噪比下的反演精度}
+  \end{subfigure}
+  \caption{模型收敛特性与抗噪鲁棒性对比分析}
+  \label{fig:noise}
+\end{figure}

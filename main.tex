@@ -1,0 +1,125 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+% ============================================================================
+% 中国地质大学（武汉）研究生学位论文 LaTeX 模板主文件
+% 依据：《中国地质大学（武汉）研究生学位论文写作规范》（2025年5月修改版）
+%
+% 可选类参数说明：
+%   degree = master(学硕，默认) | doctor(博士) | profmaster(全日制专硕)
+%            | parttime(非全日制专硕) | eqmaster(同等学力硕士) | eqdoctor(同等学力博士)
+%   bibstyle = numerical(顺序编码制，默认) | authoryear(著者-出版年制)
+%   fontset  = auto(自动检测，默认) | mac | windows | fandol
+%   cover    = true(输出中文封面，默认) | false(学校统一印制封面时关闭)
+%   spine    = false(默认) | true(末尾附加竖排书脊页)
+%   blind    = false(默认) | true(盲审模式，自动隐藏个人信息)
+%   print    = false(电子版，默认) | true(双面印刷模式，中文摘要从奇数页起)
+%   frontheader = true(前置页显示页眉，默认) | false(前置页仅显示外侧罗马页码)
+% ============================================================================
+\documentclass[
+  degree=master,
+  bibstyle=numerical,
+  fontset=auto,
+  cover=true,
+  spine=false,
+  blind=false,
+  print=false
+]{cugthesis}
+
+% 示例插图使用 TikZ 绘制矢量图（实际写作可直接 \includegraphics 插入 pdf/png/eps）
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+
+% ============================================================================
+% 论文基本元数据配置（所有封面、题名页、声明、页眉均由此自动生成）
+% ============================================================================
+\cugsetup{
+  % 分类号（《中国图书馆分类法》第4版）与 UDC（www.udcc.org）
+  clc               = {P631.4},
+  udc               = {550.8},
+  % 密级：公开论文可填“公开”或留空；涉密论文经批准后标注如“保密★2年”
+  secret            = {公开},
+  % 学校代码固定为 10491
+  schoolcode        = {10491},
+  studentid         = {1202310001},
+  % 论文题目（规范1.1：一般不宜超过25字，必要时填写 subtitle）
+  title             = {基于多尺度特征融合的地球物理数据智能反演方法研究},
+  subtitle          = {},
+  % 长题目页眉简称（留空则自动使用 title）
+  header-title      = {},
+  % 英文论文题目
+  title-en          = {Research on Intelligent Inversion of Geophysical Data Based on Multi-Scale Feature Fusion},
+  subtitle-en       = {},
+  % 作者姓名（中英文）
+  author            = {张三},
+  author-en         = {Zhang San},
+  % 学科专业 / 专业学位类别（以教育部2022版目录为准）
+  major             = {计算机科学与技术},
+  major-en          = {Computer Science and Technology},
+  % 英文学位门类（如 Engineering / Science / Computer Technology）
+  degree-subject-en = {Engineering},
+  % 指导教师（姓名 + 空格 + 职称；若有副导师/企业导师按需填写）
+  supervisor        = {李\ 四\quad 教授},
+  supervisor-en     = {Prof. Li Si},
+  cosupervisor      = {},
+  corpsupervisor    = {},
+  corpsupervisor-en = {},
+  % 培养单位（规范全称，如地球科学学院、计算机学院等）
+  department        = {计算机学院},
+  % 论文完成时间（规范1.1/3.2/3.4：必须用汉字，不用阿拉伯数字）
+  date              = {二○二六年五月},
+  % 关键词（3~5个，中文用全角分号“；”分隔，英文用半角分号“; ”分隔）
+  keywords          = {地球物理反演；深度学习；多尺度特征融合；物理约束；不确定性量化},
+  keywords-en       = {Geophysical Inversion; Deep Learning; Multi-Scale Feature Fusion; Physics Constraints; Uncertainty Quantification},
+  % 可选：电子手写签名图片路径及签字日期（纸质提交需亲笔签名，平时留空即可）
+  author-sig        = {},
+  supervisor-sig    = {},
+  sig-date          = {},
+}
+
+% ============================================================================
+% 正文开始（严格遵循规范第1章规定的 16 个组成部分先后顺序）
+% ============================================================================
+\begin{document}
+
+% 1. 中文封面  2. 中文题名页  3. 英文题名页
+% 4. 原创性声明  5. 导师承诺书  6. 使用授权书
+\makefrontpages
+
+% 7. 作者简介（规范1.6、附件6）
+\input{frontmatter/resume}
+
+% 8. 学位论文答辩委员会名单（规范1.7、附件7，置于中文摘要之前）
+\input{frontmatter/committee}
+
+% 9. 中文摘要（自此起启用罗马数字页码 I, II, III...，规范3.10自此双面印刷）
+\input{frontmatter/abstract_zh}
+
+% 10. Abstract
+\input{frontmatter/abstract_en}
+
+% 11. 目录（规范1.10、3.7、附件8）
+\cugtableofcontents
+
+% 12. 图和表清单（规范1.11、附件9；非必要项，如不需要直接注释以下两行）
+\cuglistoffigures
+\cuglistoftables
+
+% 13. 正文（自第一章起阿拉伯数字页码 1, 2, 3...，规范2.4页眉及外侧页码）
+\cugmainmatter
+\include{chapters/chap01}
+\include{chapters/chap02}
+\include{chapters/chap03}
+\include{chapters/chap04}
+
+% 14. 参考文献（规范1.13、2.6、3.9、附件11，GB/T 7714）
+\cugbackmatter
+\cugbibliography{bib/references}
+
+% 15. 致谢（规范1.14、3.9）
+\input{backmatter/acknowledgements}
+
+% 16. 附录（规范1.15、3.9；如无附录可注释）
+\cugappendix
+\include{backmatter/appendix}
+
+\end{document}

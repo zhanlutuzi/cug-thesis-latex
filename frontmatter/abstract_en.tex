@@ -1,0 +1,15 @@
+% !TeX root = ../main.tex
+% 第1.9节、第3.6节：Abstract（不少于300个英文实词，与中文摘要相对应）
+\begin{abstracten}
+Geophysical inversion is a fundamental technique for subsurface imaging and mineral exploration. However, conventional iterative optimization methods often suffer from high computational cost, sensitivity to initial models, and local minima under strong nonlinearity. Although deep learning has shown great promise in geophysical inversion, practical deployment in complex geological settings remains limited by insufficient multi-scale feature extraction, weak cross-region generalization, and potential violations of governing physical equations.
+
+To address these challenges, this thesis investigates high-precision intelligent inversion for complex subsurface media. The main contributions are summarized as follows:
+
+First, a multi-scale encoder-decoder network with residual attention is proposed. By combining cross-scale dilated convolution pyramids with channel-spatial attention modules, the network captures both large-scale background trends and fine-scale thin-bed anomalies while mitigating high-frequency detail loss.
+
+Second, a physics-constrained dual-driven inversion framework is constructed by embedding differentiable forward operators into the training loss. Without noticeably increasing inference latency, this enforces kinematic and dynamic consistency between predictions and observations, improving generalization under scarce labels and cross-survey transfer.
+
+Third, an uncertainty quantification strategy integrating Monte Carlo dropout and deep ensembles is developed to estimate spatial confidence intervals and posterior variance maps alongside subsurface property predictions.
+
+Experiments on synthetic benchmarks and a real 3D field survey show that the proposed method outperforms conventional full-waveform inversion and existing deep learning baselines in accuracy, noise robustness, and speed, improving $R^2$ by approximately 6.4\% while accelerating inference by over two orders of magnitude.
+\end{abstracten}
