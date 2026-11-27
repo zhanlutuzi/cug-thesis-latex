@@ -84,7 +84,7 @@ xelatex main.tex
 | :--- | :--- | :--- |
 | `degree` | `master`（默认）<br>`doctor`<br>`profmaster`<br>`parttime`<br>`eqmaster`<br>`eqdoctor` | 分别对应：学术型硕士、博士、全日制专业学位硕士、非全日制专业学位硕士、同等学力硕士、同等学力博士。<br>会自动联动切换封面、中英文题名页、原创性声明、导师承诺书以及奇数页页眉文字（例如专硕自动将“学科专业”切换为“专业学位类别”）。 |
 | `bibstyle` | `numerical`（默认）<br>`authoryear` | `numerical`：GB/T 7714 顺序编码制（正文上标 `[1]`）；<br>`authoryear`：GB/T 7714 著者-出版年制。 |
-| `fontset` | `auto`（默认）<br>`macword` / `mac` / `windows` / `fandol` | 自动检测系统字体（Windows 用系统宋体/黑体/仿宋/楷体；macOS 装有 Microsoft Word 时自动优先调用 Word 内置原版 `SimSun`/`SimHei`/`FangSong`/`KaiTi`，未装 Word 时回退 `Songti SC Light`/`Heiti SC`；Linux/Overleaf 自动回退 TeX Live 内置 Fandol 字体）。 |
+| `fontset` | `auto`（默认）<br>`mac` / `windows` / `fandol` | 自动检测系统字体（Windows 用宋体/黑体/仿宋/Times New Roman；macOS 下宋体优先自动调用本机 Microsoft Word 内置 `SimSun`，未装 Word 时回退 `Songti SC`，黑体/仿宋保持 macOS 系统字体；Linux/Overleaf 自动回退 TeX Live 内置 Fandol 字体）。 |
 | `cover` | `true`（默认）<br>`false` | 是否输出中文封面。提交学校统一印制固定封面时，设为 `false` 即可直接从中文题名页开始。 |
 | `spine` | `false`（默认）<br>`true` | 设为 `true` 时，在 PDF 最后一页生成仿宋竖排书脊（规范 3.3）。 |
 | `blind` | `false`（默认）<br>`true` | **盲审模式**：自动将作者姓名、学号、导师姓名替换为 `******`，隐藏签名图片及偶数页页眉中的姓名。 |
