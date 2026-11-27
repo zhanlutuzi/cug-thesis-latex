@@ -836,20 +836,20 @@
 
     % 校名与学位论文类型：宋体26磅(一号)加粗
     \begin{center}
-      {\songti\bfseries\fontsize{26bp}{34bp}\selectfont
-        中国地质大学\\[0.4em]
-        \cug@degreetitle
+      {\songti\bfseries\fontsize{26bp}{38bp}\selectfont
+        中国地质大学\\[0.3em]
+        \cug@degreetitle\par
       }
     \end{center}
 
-    \vspace{1.8cm}
+    \vspace{1.6cm}
 
-    % 论文题目：黑体22磅(二号)加粗居中，单倍行距
+    % 论文题目：黑体22磅(二号)加粗居中，单倍行距（匹配 Word 二号中文单倍行距）
     \begin{center}
-      {\heiti\bfseries\fontsize{22bp}{28bp}\selectfont
-        \cug@get@title
+      {\heiti\bfseries\fontsize{22bp}{33bp}\selectfont
+        \cug@get@title\par
         \cug@ifempty{\cug@get@subtitle}{}{%
-          \\[0.4em]{\fontsize{18bp}{24bp}\selectfont ——\cug@get@subtitle}%
+          \vspace{0.3em}{\fontsize{18bp}{26bp}\selectfont ——\cug@get@subtitle\par}%
         }%
       }
     \end{center}
@@ -908,20 +908,20 @@
 
     % 中国地质大学 + 学位论文类型：宋体26磅(一号)加粗
     \begin{center}
-      {\songti\bfseries\fontsize{26bp}{34bp}\selectfont
-        中国地质大学\\[0.4em]
-        \cug@degreetitle
+      {\songti\bfseries\fontsize{26bp}{38bp}\selectfont
+        中国地质大学\\[0.3em]
+        \cug@degreetitle\par
       }
     \end{center}
 
-    \vspace{1.8cm}
+    \vspace{1.6cm}
 
-    % 论文题目：黑体22磅(二号)加粗居中，单倍行距
+    % 论文题目：黑体22磅(二号)加粗居中，单倍行距（匹配 Word 二号中文单倍行距）
     \begin{center}
-      {\heiti\bfseries\fontsize{22bp}{28bp}\selectfont
-        \cug@get@title
+      {\heiti\bfseries\fontsize{22bp}{33bp}\selectfont
+        \cug@get@title\par
         \cug@ifempty{\cug@get@subtitle}{}{%
-          \\[0.4em]{\fontsize{18bp}{24bp}\selectfont ——\cug@get@subtitle}%
+          \vspace{0.3em}{\fontsize{18bp}{26bp}\selectfont ——\cug@get@subtitle\par}%
         }%
       }
     \end{center}
@@ -969,34 +969,33 @@
     % 顶部声明（自动适配博士、学硕、全日制专硕、非全日制专硕 4 种附件2样式）
     \par\vspace*{\dimexpr0.4cm-\topskip\relax}\nointerlineskip
     {\setlength{\parindent}{0pt}\centering
-      {\fontsize{16bp}{22bp}\selectfont
-        A Dissertation Submitted to China University of Geosciences\\[0.35em]
-        \cug@ifprof{%
-          \cug@ifparttime{%
-            For the Part-Time Master of Professional Degree of\\[0.35em]
-            \cug@get@degreesubject@en
-          }{%
-            For the Full-Time Master of Professional Degree of\\[0.35em]
-            \cug@get@degreesubject@en
-          }%
+      \fontsize{16bp}{24bp}\selectfont
+      A Dissertation Submitted to China University of Geosciences\\[0.25em]
+      \cug@ifprof{%
+        \cug@ifparttime{%
+          For the Part-Time Master of Professional Degree of\\[0.25em]
+          \cug@get@degreesubject@en
         }{%
-          \cug@ifdoctor{%
-            For the Doctor Degree of \cug@get@degreesubject@en
-          }{%
-            For the Master Degree of \cug@get@degreesubject@en
-          }%
+          For the Full-Time Master of Professional Degree of\\[0.25em]
+          \cug@get@degreesubject@en
+        }%
+      }{%
+        \cug@ifdoctor{%
+          For the Doctor Degree of \cug@get@degreesubject@en
+        }{%
+          For the Master Degree of \cug@get@degreesubject@en
         }%
       }\par
     }
 
-    \vspace{2.2cm}
+    \vspace{2.0cm}
 
     % 英文题目：Times New Roman 22磅(二号)加粗居中，单倍行距
     \begin{center}
-      {\bfseries\fontsize{22bp}{27bp}\selectfont
-        \cug@get@title@en
+      {\bfseries\fontsize{22bp}{29bp}\selectfont
+        \cug@get@title@en\par
         \cug@ifempty{\cug@get@subtitle@en}{}{%
-          \\[0.35em]{\fontsize{18bp}{23bp}\selectfont \cug@get@subtitle@en}%
+          \vspace{0.25em}{\fontsize{18bp}{24bp}\selectfont \cug@get@subtitle@en\par}%
         }%
       }
     \end{center}
@@ -1017,13 +1016,13 @@
       \end{tabular}}
     \end{center}
 
-    \vspace{2.4cm}
+    \vspace{2.2cm}
 
     % 底部学校英文名称与邮编
     \begin{center}
-      {\fontsize{16bp}{22bp}\selectfont
-        China University of Geosciences\\[0.3em]
-        Wuhan 430074 P.R. China
+      {\fontsize{16bp}{24bp}\selectfont
+        China University of Geosciences\\[0.25em]
+        Wuhan 430074 P.R. China\par
       }
     \end{center}
     \vspace{0.6cm}
