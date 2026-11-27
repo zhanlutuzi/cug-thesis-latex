@@ -685,17 +685,23 @@
 \patchcmd{\@chapter}{\addtocontents{lof}{\protect\addvspace{10\p@}}}{}{}{}
 \patchcmd{\@chapter}{\addtocontents{lot}{\protect\addvspace{10\p@}}}{}{}{}
 
+% 统一页首居中标题（扣除 \topskip 且避免 \begin{center} 的 trivlist 额外下沉，与 \chapter 顶距精确一致）
+% #1 = 段前间距, #2 = 段后间距, #3 = 字体与字号命令, #4 = 标题文本
+\newcommand{\cug@pagetitle}[4]{%
+  \begingroup
+    \par\vspace*{\dimexpr#1-\topskip\relax}\nointerlineskip
+    {\setlength{\parindent}{0pt}\centering #3#4\par}%
+    \vspace{#2}%
+  \endgroup
+}
+
 \newcommand{\cugtableofcontents}{%
   \clearpage
   \renewcommand{\cug@front@headmark}{\songti 目\quad 录}%
   \pagestyle{cugfront}%
   \phantomsection
   \pdfbookmark[0]{目录}{toc}%
-  \vspace*{12bp}%
-  \begin{center}
-    {\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont 目\quad 录}
-  \end{center}
-  \vspace{12bp}%
+  \cug@pagetitle{20bp}{20bp}{\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont}{目\quad 录}%
   \@starttoc{toc}%
   \clearpage
 }
@@ -706,11 +712,7 @@
   \pagestyle{cugfront}%
   \phantomsection
   \addcontentsline{toc}{chapter}{图清单}%
-  \vspace*{12bp}%
-  \begin{center}
-    {\heiti\bfseries\fontsize{18bp}{21.6bp}\selectfont 图清单}
-  \end{center}
-  \vspace{12bp}%
+  \cug@pagetitle{20bp}{20bp}{\heiti\bfseries\fontsize{18bp}{21.6bp}\selectfont}{图清单}%
   \@starttoc{lof}%
   \clearpage
 }
@@ -721,11 +723,7 @@
   \pagestyle{cugfront}%
   \phantomsection
   \addcontentsline{toc}{chapter}{表清单}%
-  \vspace*{12bp}%
-  \begin{center}
-    {\heiti\bfseries\fontsize{18bp}{21.6bp}\selectfont 表清单}
-  \end{center}
-  \vspace{12bp}%
+  \cug@pagetitle{20bp}{20bp}{\heiti\bfseries\fontsize{18bp}{21.6bp}\selectfont}{表清单}%
   \@starttoc{lot}%
   \clearpage
 }
@@ -801,11 +799,7 @@
   \renewcommand{\bibname}{参考文献}%
   \begingroup
     \renewcommand{\bibsection}{%
-      \vspace*{20bp}%
-      \begin{center}
-        {\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont 参考文献}
-      \end{center}
-      \vspace{16bp}%
+      \cug@pagetitle{20bp}{24bp}{\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont}{参考文献}%
     }%
     \setlength{\bibsep}{0pt}%
     \songti\fontsize{12bp}{20bp}\selectfont
@@ -972,10 +966,9 @@
   \thispagestyle{cugempty}%
   \begingroup
     \rmfamily
-    \vspace*{0.8cm}
-
     % 顶部声明（自动适配博士、学硕、全日制专硕、非全日制专硕 4 种附件2样式）
-    \begin{center}
+    \par\vspace*{\dimexpr0.4cm-\topskip\relax}\nointerlineskip
+    {\setlength{\parindent}{0pt}\centering
       {\fontsize{16bp}{22bp}\selectfont
         A Dissertation Submitted to China University of Geosciences\\[0.35em]
         \cug@ifprof{%
@@ -993,8 +986,8 @@
             For the Master Degree of \cug@get@degreesubject@en
           }%
         }%
-      }
-    \end{center}
+      }\par
+    }
 
     \vspace{2.2cm}
 
@@ -1062,13 +1055,7 @@
   \clearpage
   \thispagestyle{cugempty}%
   \begingroup
-    \vspace*{1.2cm}
-    \begin{center}
-      {\heiti\bfseries\fontsize{16bp}{22bp}\selectfont
-        中国地质大学（武汉）研究生学位论文原创性声明
-      }
-    \end{center}
-    \vspace{1.2cm}
+    \cug@pagetitle{24bp}{28bp}{\heiti\bfseries\fontsize{16bp}{22bp}\selectfont}{中国地质大学（武汉）研究生学位论文原创性声明}%
 
     {\songti\fontsize{14bp}{26bp}\selectfont
       \par\indent 本人郑重声明：本人所呈交的\cug@degreeshort 学位论文《\cug@get@title》，是本人在导师的指导下，在中国地质大学（武汉）攻读\cug@degreeshort 学位期间独立进行研究工作所取得的成果。论文中除已注明部分外不包含他人已发表或撰写过的研究成果，对论文的完成提供过帮助的有关人员已在文中说明并致以谢意。
@@ -1093,13 +1080,7 @@
   \clearpage
   \thispagestyle{cugempty}%
   \begingroup
-    \vspace*{1.2cm}
-    \begin{center}
-      {\heiti\bfseries\fontsize{16bp}{22bp}\selectfont
-        中国地质大学（武汉）研究生学位论文导师承诺书
-      }
-    \end{center}
-    \vspace{1.2cm}
+    \cug@pagetitle{24bp}{28bp}{\heiti\bfseries\fontsize{16bp}{22bp}\selectfont}{中国地质大学（武汉）研究生学位论文导师承诺书}%
 
     {\songti\fontsize{14bp}{26bp}\selectfont
       \par\indent 本人郑重承诺：本人所指导的\cug@degreeshort 学位论文《\cug@get@title》，是在本人的指导下，研究生在中国地质大学（武汉）攻读\cug@degreeshort 学位期间独立进行研究工作所取得的成果，论文由研究生独立完成。
@@ -1124,13 +1105,7 @@
   \clearpage
   \thispagestyle{cugempty}%
   \begingroup
-    \vspace*{1.2cm}
-    \begin{center}
-      {\heiti\bfseries\fontsize{16bp}{22bp}\selectfont
-        中国地质大学（武汉）学位论文使用授权书
-      }
-    \end{center}
-    \vspace{1.2cm}
+    \cug@pagetitle{24bp}{28bp}{\heiti\bfseries\fontsize{16bp}{22bp}\selectfont}{中国地质大学（武汉）学位论文使用授权书}%
 
     {\songti\fontsize{14bp}{26bp}\selectfont
       \par\indent 本人授权中国地质大学（武汉）可采用影印、缩印、数字化或其它复制手段保存本学位论文；学校可向国家有关部门或机构送交本学位论文的电子版全文，编入有关数据库进行检索、下载及文献传递服务；同意在校园网内提供全文浏览和下载服务。
@@ -1167,11 +1142,7 @@
   \clearpage
   \thispagestyle{cugempty}%
   \pagestyle{cugempty}%
-  \vspace*{20bp}%
-  \begin{center}
-    {\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont #1}
-  \end{center}
-  \vspace{18bp}%
+  \cug@pagetitle{20bp}{24bp}{\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont}{#1}%
   \songti\fontsize{12bp}{20bp}\selectfont
 }{%
   \clearpage
@@ -1184,11 +1155,7 @@
   \clearpage
   \thispagestyle{cugempty}%
   \pagestyle{cugempty}%
-  \vspace*{1.5cm}%
-  \begin{center}
-    {\heiti\bfseries\fontsize{22bp}{28bp}\selectfont 学位论文答辩委员会名单}
-  \end{center}
-  \vspace{1.8cm}%
+  \cug@pagetitle{24bp}{36bp}{\heiti\bfseries\fontsize{22bp}{28bp}\selectfont}{学位论文答辩委员会名单}%
   \begin{center}
     \renewcommand{\arraystretch}{1.8}%
     \songti\fontsize{16bp}{22bp}\selectfont
@@ -1216,11 +1183,7 @@
   \pagestyle{cugfront}%
   \phantomsection
   \pdfbookmark[0]{摘要}{abstractzh}%
-  \vspace*{12bp}%
-  \begin{center}
-    {\heiti\bfseries\fontsize{18bp}{21.6bp}\selectfont 摘\quad 要}
-  \end{center}
-  \vspace{14bp}%
+  \cug@pagetitle{20bp}{20bp}{\heiti\bfseries\fontsize{18bp}{21.6bp}\selectfont}{摘\quad 要}%
   \songti\fontsize{12bp}{20bp}\selectfont
 }{%
   \par\vspace{10bp}%
@@ -1236,11 +1199,7 @@
   \pagestyle{cugfront}%
   \phantomsection
   \pdfbookmark[0]{Abstract}{abstracten}%
-  \vspace*{12bp}%
-  \begin{center}
-    {\rmfamily\bfseries\fontsize{18bp}{21.6bp}\selectfont Abstract}
-  \end{center}
-  \vspace{14bp}%
+  \cug@pagetitle{20bp}{20bp}{\rmfamily\bfseries\fontsize{18bp}{21.6bp}\selectfont}{Abstract}%
   \rmfamily\fontsize{12bp}{20bp}\selectfont
 }{%
   \par\vspace{10bp}%
@@ -1256,11 +1215,7 @@
   \clearpage
   \phantomsection
   \addcontentsline{toc}{chapter}{致谢}%
-  \vspace*{20bp}%
-  \begin{center}
-    {\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont 致\quad 谢}
-  \end{center}
-  \vspace{20bp}%
+  \cug@pagetitle{20bp}{24bp}{\heiti\bfseries\fontsize{16bp}{19.2bp}\selectfont}{致\quad 谢}%
   \songti\fontsize{12bp}{20bp}\selectfont
 }{%
   \clearpage
