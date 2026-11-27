@@ -45,8 +45,8 @@
       { \tl_gset:Nx \g_cug_bibstyle_tl { \l_keys_choice_tl } },
     bibstyle .initial:n = numerical,
 
-    % 字体集: auto(跨平台自动检测，默认), mac, windows, fandol
-    fontset .choices:nn = { auto, mac, windows, fandol }
+    % 字体集: auto(跨平台自动检测，默认), macword(macOS Word内置中易字体), mac, windows, fandol
+    fontset .choices:nn = { auto, macword, mac, windows, fandol }
       { \tl_gset:Nx \g_cug_fontset_tl { \l_keys_choice_tl } },
     fontset .initial:n = auto,
 
@@ -200,10 +200,46 @@
   \setCJKfamilyfont{zhkai}{KaiTi}[AutoFakeBold = 1.8]%
 }
 
+\newcommand{\cug@macword@fontpath}{/Applications/Microsoft Word.app/Contents/Resources/DFonts/}
+
+\newcommand{\cug@setup@fonts@macword}{%
+  \setCJKmainfont{Simsun.ttc}[
+    Path = \cug@macword@fontpath,
+    FontIndex = 0,
+    AutoFakeBold = 2.0,
+    ItalicFont = Kaiti.ttf
+  ]%
+  \setCJKsansfont{SimHei.ttf}[
+    Path = \cug@macword@fontpath,
+    AutoFakeBold = 1.8
+  ]%
+  \setCJKmonofont{Fangsong.ttf}[
+    Path = \cug@macword@fontpath,
+    AutoFakeBold = 1.8
+  ]%
+  \setCJKfamilyfont{zhsong}{Simsun.ttc}[
+    Path = \cug@macword@fontpath,
+    FontIndex = 0,
+    AutoFakeBold = 2.0
+  ]%
+  \setCJKfamilyfont{zhhei}{SimHei.ttf}[
+    Path = \cug@macword@fontpath,
+    AutoFakeBold = 1.8
+  ]%
+  \setCJKfamilyfont{zhfs}{Fangsong.ttf}[
+    Path = \cug@macword@fontpath,
+    AutoFakeBold = 1.8
+  ]%
+  \setCJKfamilyfont{zhkai}{Kaiti.ttf}[
+    Path = \cug@macword@fontpath,
+    AutoFakeBold = 1.8
+  ]%
+}
+
 \newcommand{\cug@setup@fonts@mac}{%
   \IfFontExistsTF{Songti SC}{%
-    \setCJKmainfont{Songti SC}[UprightFont = * Regular, BoldFont = * Bold]%
-    \setCJKfamilyfont{zhsong}{Songti SC}[UprightFont = * Regular, BoldFont = * Bold]%
+    \setCJKmainfont{Songti SC}[UprightFont = * Light, BoldFont = * Bold]%
+    \setCJKfamilyfont{zhsong}{Songti SC}[UprightFont = * Light, BoldFont = * Bold]%
   }{%
     \setCJKmainfont{FandolSong-Regular.otf}[BoldFont = FandolSong-Bold.otf]%
     \setCJKfamilyfont{zhsong}{FandolSong-Regular.otf}[BoldFont = FandolSong-Bold.otf]%
@@ -238,10 +274,14 @@
   \IfFontExistsTF{SimSun}{%
     \cug@setup@fonts@windows
   }{%
-    \IfFontExistsTF{Songti SC}{%
-      \cug@setup@fonts@mac
+    \IfFileExists{/Applications/Microsoft Word.app/Contents/Resources/DFonts/Simsun.ttc}{%
+      \cug@setup@fonts@macword
     }{%
-      \cug@setup@fonts@fandol
+      \IfFontExistsTF{Songti SC}{%
+        \cug@setup@fonts@mac
+      }{%
+        \cug@setup@fonts@fandol
+      }%
     }%
   }%
 }
@@ -250,6 +290,7 @@
 \str_case:Vn \g_cug_fontset_tl
   {
     { auto }    { \cug@setup@fonts@auto }
+    { macword } { \cug@setup@fonts@macword }
     { mac }     { \cug@setup@fonts@mac }
     { windows } { \cug@setup@fonts@windows }
     { fandol }  { \cug@setup@fonts@fandol }
@@ -611,7 +652,7 @@
   },
   subsubsection = {
     aftername  = \hspace{1\ccwd},
-    format     = \songti\bfseries\fontsize{12bp}{14.4bp}\selectfont\raggedright,
+    format     = \songti\fontsize{12bp}{14.4bp}\selectfont\raggedright,
     beforeskip = 8bp,
     afterskip  = 6bp,
     fixskip    = true,
